@@ -1,0 +1,182 @@
+version: "2"
+linters:
+  enable:
+    - asasalint
+    - asciicheck
+    - bodyclose
+    - canonicalheader
+    - bidichk
+    - copyloopvar
+    - cyclop
+    - decorder
+    - dogsled
+    - dupl
+    - dupword
+    - err113
+    - errname
+    - errchkjson
+    - errorlint
+    - exhaustive
+    - forbidigo
+    - funlen
+    - ginkgolinter
+    - gochecksumtype
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - godot
+    - godox
+    - goheader
+    - gomoddirectives
+    - gomodguard
+    - gosec
+    - gosmopolitan
+    - grouper
+    - iface
+    - importas
+    - inamedparam
+    - interfacebloat
+    - loggercheck
+    - maintidx
+    - makezero
+    - misspell
+    - mnd
+    - musttag
+    - nakedret
+    - nestif
+    - nilnil
+    - nlreturn
+    - nolintlint
+    - nonamedreturns
+    - paralleltest
+    - perfsprint
+    - prealloc
+    - predeclared
+    - promlinter
+    - protogetter
+    - reassign
+    - revive
+    - rowserrcheck
+    - sloglint
+    - spancheck
+    - staticcheck
+    - tagalign
+    - tagliatelle
+    - testifylint
+    - testpackage
+    - thelper
+    - unconvert
+    - unparam
+    - usestdlibvars
+    - usetesting
+    - varnamelen
+    - whitespace
+    - wrapcheck
+    - wsl_v5
+  disable:
+    - depguard
+    - lll
+  settings:
+    wsl_v5:
+      allow-first-in-block: true
+      allow-whole-block: false
+      branch-max-lines: 2
+    funlen:
+      lines: 80
+      statements: 60
+      ignore-comments: true
+    revive:
+      enable-all-rules: true
+      rules:
+        - name: var-naming
+          severity: error
+          disabled: false
+          exclude: []
+          arguments:
+            - [] # AllowList
+            - [] # DenyList
+            - - upper-case-const: true
+        - name: line-length-limit
+          severity: error
+          disabled: false
+          exclude: []
+          arguments: [120]
+        - name: add-constant
+          severity: error
+          disabled: false
+          exclude: []
+          arguments:
+            - max-lit-count: "3"
+              allow-strs: '""'
+              allow-ints: "0,1,-1"
+        - name: cognitive-complexity
+          severity: warning
+          disabled: false
+          exclude: [""]
+          arguments: [12]
+    nlreturn:
+      block-size: 2
+    varnamelen:
+      max-distance: 6
+      min-name-length: 3
+      check-receiver: false
+      check-return: true
+      check-type-param: true
+      ignore-names:
+        - err
+        - to
+        - id
+        - tt
+      ignore-type-assert-ok: true
+      ignore-map-index-ok: true
+      ignore-chan-recv-ok: true
+      ignore-decls:
+        - t testing.T
+        - i int
+        - j int
+        - q string
+        - T any
+        - wg sync.WaitGroup
+        - re *regexp.Regexp
+    wrapcheck:
+      ignore-sigs:
+        - github.com/gofiber/fiber/v3.Ctx
+        - .Errorf(
+        - errors.New(
+        - errors.Unwrap(
+        - errors.Join(
+        - .Wrap(+
+        - .Wrapf(
+        - .WithMessage(
+        - .WithMessagef(
+        - .WithStack(
+        - opentelemetry.RecordError(
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - vendor/.*
+      - .*_generated.go
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gofmt
+    - gofumpt
+    - goimports
+    - golines
+    - gci
+  exclusions:
+    generated: lax
+    paths:
+      - vendor/.*
+      - .*_generated.go
+      - third_party$
+      - builtin$
+      - examples$
