@@ -5,11 +5,17 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"reflect"
 	"regexp"
 	"strings"
 )
 
-const EnvPartsNumber = 2
+const (
+	ENV_PARTS_NUMBER = 2
+	ENV_TAG          = "env"
+	DESCRIPTION_TAG  = "description"
+	DEFAULT_TAG      = "default"
+)
 
 var ErrEmptyFile = errors.New("file is empty")
 
@@ -66,7 +72,7 @@ func MapContent(content []string) map[string]string {
 			continue
 		}
 
-		envVar := sepRegex.Split(line, EnvPartsNumber)
+		envVar := sepRegex.Split(line, ENV_PARTS_NUMBER)
 		envKey := strings.TrimSpace(envVar[0])
 		envVal := strings.TrimSpace(envVar[1])
 
@@ -76,4 +82,23 @@ func MapContent(content []string) map[string]string {
 	}
 
 	return envVars
+}
+
+func FillStructField(field reflect.Value, structField reflect.StructField, envVal string) error {
+	if !field.CanSet() {
+		return fmt.Errorf("field %s is not settable", structField.Name)
+	}
+
+	// envTag := structField.Tag.Get(ENV_TAG)
+	// descriptionTag := structField.Tag.Get(DESCRIPTION_TAG)
+	// defaultTag := structField.Tag.Get(DEFAULT_TAG)
+
+	switch field.Kind() {
+	case reflect.String:
+		field.SetString(envVal)
+	default:
+		return fmt.Errorf("unsupported field type %s for field %s", field.Kind(), structField.Name)
+	}
+
+	return nil
 }
